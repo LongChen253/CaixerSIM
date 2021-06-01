@@ -31,6 +31,5 @@ public class Main {
             Event aux = events.get(0);
             aux.tractarEvent(c1, c2, c3, c4, op, q, events);
         }
-        //events.removeIf(t -> t.getNom() == "EndService1" && t.getObjecte() == "Server1" && t.getTemps() == 15);
     }
 }

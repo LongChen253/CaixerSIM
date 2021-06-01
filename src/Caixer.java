@@ -36,6 +36,10 @@ public class Caixer{
         this.client = x;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
     private void changeState (String estat) {
         this.state = estat;
     }
@@ -97,7 +101,7 @@ public class Caixer{
                 this.esperant_operariX = true;
             }
         }
-        else if (event.equals("FinishDubte") && esperant_operariX) {
+        else if (event.equals("FinishDubte")) {
             if (state == "BUSY" && esperant_operariX) {
                 if (op.IsAvailable()) {
                     if (server == '1') events.add(new Event("NewDubte1", "Operari", temps));
@@ -109,14 +113,24 @@ public class Caixer{
                     changeState("ASKING");
                 }
             } else if (state == "ASKING") {
-                op.changeAvailable(true);
+                int aux = temps + timeLeft - client.getDubteTimeClient();
                 if (server == '1') {
-
+                    events.removeIf(t -> t.getNom() == "EndService1" && t.getObjecte() == "Server1" && t.getTemps() == aux);
                     events.add(new Event("EndService1", "Server1", temps + timeLeft));
                 }
-                else if (server == '2') events.add(new Event("EndService2", "Server2", temps + timeLeft));
-                else if (server == '3') events.add(new Event("EndService3", "Server3", temps + timeLeft));
-                else if (server == '4') events.add(new Event("EndService4", "Server4", temps + timeLeft));
+                else if (server == '2') {
+                    events.removeIf(t -> t.getNom() == "EndService2" && t.getObjecte() == "Server2" && t.getTemps() == aux);
+                    events.add(new Event("EndService2", "Server2", temps + timeLeft));
+                }
+                else if (server == '3') {
+                    events.removeIf(t -> t.getNom() == "EndService3" && t.getObjecte() == "Server3" && t.getTemps() == aux);
+                    events.add(new Event("EndService3", "Server3", temps + timeLeft));
+                }
+                else if (server == '4') {
+                    events.removeIf(t -> t.getNom() == "EndService4" && t.getObjecte() == "Server4" && t.getTemps() == aux);
+                    events.add(new Event("EndService4", "Server4", temps + timeLeft));
+                }
+                changeState("BUSY");
             }
         }
 

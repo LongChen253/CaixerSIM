@@ -13,7 +13,7 @@ public class Client {
         ServiceTimeClient = ServiceTime[idx];
         if (ServiceTimeClient == 10) DubteTimeClient = 0;
         else if (ServiceTimeClient == 20) DubteTimeClient = 5;
-        else  DubteTimeClient = 10;
+        else DubteTimeClient = 10;
     }
 
     /*

@@ -44,7 +44,7 @@ public class Queue {
 
     public void tractarEventQueue(String nom, int temps, Caixer c1, Caixer c2, Caixer c3, Caixer c4, Operari op, Queue q, List<Event> events) {
         if (nom == "NewArrival") {
-            if (temps < 300) {
+            if (temps < 1440) {
                 events.add(new Event(nom, "Queue", temps + 10));
             }
             Client c = new Client();

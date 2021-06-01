@@ -31,6 +31,9 @@ public class Event {
         else if (objecte == "Server4") {
             c4.tractarEventServer(nom, temps, op, q, events);
         }
+        else if (objecte == "Operari") {
+            op.tractarEventOperari(nom, temps, c1, c2, c3, c4, events);
+        }
     }
 
     public String getNom() {
