@@ -39,6 +39,7 @@ public class Main {
         System.out.print("Mitjana temps esperat en la cua: ");
         System.out.printf("%.2f", q.getTotalTempsCua()/q.getNumeroTempsCua());
         System.out.println(" minuts");
+        System.out.println("Clients que marxen despres d'esperar 15 minuts: " + q.getClientsMarxats());
         System.out.println("Nombre de clients que processa el caixer 1: " + c1.getPServerX_Elems());
         System.out.println("Nombre de clients que processa el caixer 2: " + c2.getPServerX_Elems());
         System.out.println("Nombre de clients que processa el caixer 3: " + c3.getPServerX_Elems());

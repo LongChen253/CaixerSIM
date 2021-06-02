@@ -14,13 +14,12 @@ public class Queue {
 
     private double totalTempsCua;
     private double numeroTempsCua;
+    private int clientsMarxats;
 
     public Queue(List<Event> events) {
 
         this.PQueue_Elems = 0;
         this.clients = new ArrayList<>();
-        Client c = new Client();
-        clients.add(c);
         Event aux = new Event("NewArrival", "Queue", 10);
         events.add(aux);
         state = "EMPTY";
@@ -31,6 +30,7 @@ public class Queue {
 
         totalTempsCua = 0;
         numeroTempsCua = 0;
+        clientsMarxats = 0;
     }
 
     public List<Client> getClients() {
@@ -65,6 +65,10 @@ public class Queue {
         return numeroTempsCua;
     }
 
+    public int getClientsMarxats() {
+        return clientsMarxats;
+    }
+
     public void sumarPQueue_Elems() {
         ++this.PQueue_Elems;
         ++totalCanvisCua;
@@ -89,9 +93,8 @@ public class Queue {
 
             Client c = new Client();
             q.getClients().add(c);
-            q.getClients().get(0).setTempsEntradaCua(temps);
+            q.getClients().get(q.getClients().size()-1).setTempsEntradaCua(temps);
             ++totalClients;
-
 
             if (q.getState() == "EMPTY") {
                 System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
@@ -131,10 +134,13 @@ public class Queue {
                     q.sumarPQueue_Elems();
                     System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
                     q.changeState("NOEMPTY");
+
+                    events.add(new Event("Leave" + String.valueOf(temps), "Queue", temps + 15));
                 }
             } else if (q.getState() == "NOEMPTY") {
                 q.sumarPQueue_Elems();
                 System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
+                events.add(new Event("Leave" + String.valueOf(temps), "Queue", temps + 15));
             }
         } else if (nom == "FinishService1") {
             if (q.getState() == "EMPTY") c1.changeAvailable(true);
@@ -150,6 +156,8 @@ public class Queue {
                     q.getClients().get(0).setTempsSortidaCua(temps);;
                     ++numeroTempsCua;
                     totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
+                    String s = "Leave" + String.valueOf((int)q.getClients().get(0).getTempsEntradaCua());
+                    events.removeIf(t -> t.getNom().equals(s));
                     q.getClients().remove(0);
                 }
             }
@@ -167,6 +175,8 @@ public class Queue {
                     q.getClients().get(0).setTempsSortidaCua(temps);;
                     ++numeroTempsCua;
                     totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
+                    String s = "Leave" + String.valueOf((int)q.getClients().get(0).getTempsEntradaCua());
+                    events.removeIf(t -> t.getNom().equals(s));
                     q.getClients().remove(0);
                 }
             }
@@ -184,6 +194,8 @@ public class Queue {
                     q.getClients().get(0).setTempsSortidaCua(temps);;
                     ++numeroTempsCua;
                     totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
+                    String s = "Leave" + String.valueOf((int)q.getClients().get(0).getTempsEntradaCua());
+                    events.removeIf(t -> t.getNom().equals(s));
                     q.getClients().remove(0);
                 }
             }
@@ -201,10 +213,22 @@ public class Queue {
                     q.getClients().get(0).setTempsSortidaCua(temps);;
                     ++numeroTempsCua;
                     totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
+                    String s = "Leave" + String.valueOf((int)q.getClients().get(0).getTempsEntradaCua());
+                    events.removeIf(t -> t.getNom().equals(s));
                     q.getClients().remove(0);
                 }
             }
+        } else if (nom.substring(0,5).equals("Leave")) {
+            Double c = Double.parseDouble(nom.substring(5));
+            q.getClients().removeIf(t -> t.getTempsEntradaCua() == c);
+            ++clientsMarxats;
+            --PQueue_Elems;
+            ++numeroTempsCua;
+            totalTempsCua += 15;
+            System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
         }
+
+
         events.remove(0);
         Collections.sort(events, new SortbyTime());
     }
