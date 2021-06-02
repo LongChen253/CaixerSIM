@@ -40,6 +40,10 @@ public class Caixer{
         return client;
     }
 
+    public int getPServerX_Elems() {
+        return PServerX_Elems;
+    }
+
     private void changeState (String estat) {
         this.state = estat;
     }

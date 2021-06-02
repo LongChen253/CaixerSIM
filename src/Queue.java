@@ -7,6 +7,14 @@ public class Queue {
     private List<Client> clients;
     private String state;
 
+    private double sumaElemsCua;
+    private double totalCanvisCua;
+
+    private int totalClients;
+
+    private double totalTempsCua;
+    private double numeroTempsCua;
+
     public Queue(List<Event> events) {
 
         this.PQueue_Elems = 0;
@@ -16,6 +24,13 @@ public class Queue {
         Event aux = new Event("NewArrival", "Queue", 10);
         events.add(aux);
         state = "EMPTY";
+        sumaElemsCua = 0;
+        totalCanvisCua = 1;
+
+        totalClients = 0;
+
+        totalTempsCua = 0;
+        numeroTempsCua = 0;
     }
 
     public List<Client> getClients() {
@@ -30,12 +45,36 @@ public class Queue {
         return PQueue_Elems;
     }
 
+    public double getSumaElemsCua() {
+        return sumaElemsCua;
+    }
+
+    public double getTotalCanvisCua() {
+        return totalCanvisCua;
+    }
+
+    public int getTotalClients() {
+        return totalClients;
+    }
+
+    public double getTotalTempsCua() {
+        return totalTempsCua;
+    }
+
+    public double getNumeroTempsCua() {
+        return numeroTempsCua;
+    }
+
     public void sumarPQueue_Elems() {
         ++this.PQueue_Elems;
+        ++totalCanvisCua;
+        sumaElemsCua += PQueue_Elems;
     }
 
     public void restarPQueue_Elems() {
         --this.PQueue_Elems;
+        ++totalCanvisCua;
+        sumaElemsCua += PQueue_Elems;
     }
 
     public void changeState(String state) {
@@ -44,11 +83,15 @@ public class Queue {
 
     public void tractarEventQueue(String nom, int temps, Caixer c1, Caixer c2, Caixer c3, Caixer c4, Operari op, Queue q, List<Event> events) {
         if (nom == "NewArrival") {
-            if (temps < 1440) {
+            if (temps < 1000) {
                 events.add(new Event(nom, "Queue", temps + 10));
             }
+
             Client c = new Client();
             q.getClients().add(c);
+            q.getClients().get(0).setTempsEntradaCua(temps);
+            ++totalClients;
+
 
             if (q.getState() == "EMPTY") {
                 System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
@@ -56,21 +99,33 @@ public class Queue {
                     c1.changeAvailable(false);
                     c1.setClient(q.getClients().get(0));
                     events.add(new Event("NewService1", "Server1", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);;
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 } else if (c2.IsAvailable()) {
                     c2.changeAvailable(false);
                     c2.setClient(q.getClients().get(0));
                     events.add(new Event("NewService2", "Server2", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 } else if (c3.IsAvailable()) {
                     c3.changeAvailable(false);
                     c3.setClient(q.getClients().get(0));
                     events.add(new Event("NewService3", "Server3", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 } else if (c4.IsAvailable()) {
                     c4.changeAvailable(false);
                     c4.setClient(q.getClients().get(0));
                     events.add(new Event("NewService4", "Server4", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 } else {
                     q.sumarPQueue_Elems();
@@ -92,6 +147,9 @@ public class Queue {
                     System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
                     c1.setClient(q.getClients().get(0));
                     events.add(new Event("NewService1", "Server1", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);;
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 }
             }
@@ -106,6 +164,9 @@ public class Queue {
                     System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
                     c2.setClient(q.getClients().get(0));
                     events.add(new Event("NewService2", "Server2", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);;
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 }
             }
@@ -120,6 +181,9 @@ public class Queue {
                     System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
                     c3.setClient(q.getClients().get(0));
                     events.add(new Event("NewService3", "Server3", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);;
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 }
             }
@@ -134,6 +198,9 @@ public class Queue {
                     System.out.println("PQueue_Elems: " + q.getPQueue_Elems());
                     c4.setClient(q.getClients().get(0));
                     events.add(new Event("NewService4", "Server4", temps));
+                    q.getClients().get(0).setTempsSortidaCua(temps);;
+                    ++numeroTempsCua;
+                    totalTempsCua += q.getClients().get(0).getTempsSortidaCua() - q.getClients().get(0).getTempsEntradaCua();
                     q.getClients().remove(0);
                 }
             }
