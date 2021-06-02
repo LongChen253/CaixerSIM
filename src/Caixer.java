@@ -12,6 +12,7 @@ public class Caixer{
     private boolean available;
     private String state;
     private int newDubteTime;
+    private int tempsTreball;
 
     private Client client;
 
@@ -23,6 +24,7 @@ public class Caixer{
         this.esperant_operariX = false;
         this.available = true;
         state = "IDLE";
+        this.tempsTreball = 0;
     }
 
     public boolean IsAvailable () {
@@ -45,6 +47,10 @@ public class Caixer{
         return PServerX_Elems;
     }
 
+    public int getTempsTreball() {
+        return tempsTreball;
+    }
+
     private void changeState (String estat) {
         this.state = estat;
     }
@@ -55,6 +61,7 @@ public class Caixer{
 
         if (event.equals("NewService")) {
             this.PServerX_t = client.getServiceTimeClient();
+            tempsTreball += PServerX_t;
             if (server == '1') events.add(new Event("EndService1", "Server1", temps + PServerX_t));
             else if (server == '2') events.add(new Event("EndService2", "Server2", temps + PServerX_t));
             else if (server == '3') events.add(new Event("EndService3", "Server3", temps + PServerX_t));

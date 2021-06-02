@@ -15,6 +15,7 @@ public class Queue {
     private double totalTempsCua;
     private double numeroTempsCua;
     private int clientsMarxats;
+    private int tempsSimulacio;
 
     public Queue(List<Event> events) {
 
@@ -75,6 +76,14 @@ public class Queue {
         sumaElemsCua += PQueue_Elems;
     }
 
+    public int getTempsSimulacio() {
+        return tempsSimulacio;
+    }
+
+    public void setTempsSimulacio(int tempsSimulacio) {
+        this.tempsSimulacio = tempsSimulacio;
+    }
+
     public void restarPQueue_Elems() {
         --this.PQueue_Elems;
         ++totalCanvisCua;
@@ -87,7 +96,7 @@ public class Queue {
 
     public void tractarEventQueue(String nom, int temps, Caixer c1, Caixer c2, Caixer c3, Caixer c4, Operari op, Queue q, List<Event> events) {
         if (nom == "NewArrival") {
-            if (temps < 1440) {
+            if (temps < tempsSimulacio) {
                 events.add(new Event(nom, "Queue", temps + 10));
             }
 

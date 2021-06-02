@@ -6,6 +6,7 @@ public class Operari {
     private boolean available;
     private int POperari_Elems;
     private String state;
+    private int tempsTreball;
 
     public Operari () {
         this.POperari_t = 0;
@@ -20,6 +21,10 @@ public class Operari {
 
     public int getPOperari_Elems() {
         return POperari_Elems;
+    }
+
+    public int getTempsTreball() {
+        return tempsTreball;
     }
 
     public boolean IsAvailable () {
@@ -55,6 +60,7 @@ public class Operari {
                 POperari_t = c4.getClient().getDubteTimeClient();
                 events.add(new Event("FinishDubte4", "Operari", temps + POperari_t));
             }
+            tempsTreball += POperari_t;
             changeState("BUSY");
         } else if (event.equals("FinishDubte")) {
             ++POperari_Elems;
