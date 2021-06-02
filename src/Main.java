@@ -31,7 +31,7 @@ public class Main {
             Event aux = events.get(0);
             aux.tractarEvent(c1, c2, c3, c4, op, q, events);
         }
-        System.out.println("----------------Estadistics----------------");
+        System.out.println("-----------------------Estadistics-----------------------");
         System.out.println("Total clients: " + q.getTotalClients());
         System.out.print("Mitjana de clients esperant en la cua: ");
         System.out.printf("%.2f", q.getSumaElemsCua()/q.getTotalCanvisCua());
@@ -43,5 +43,6 @@ public class Main {
         System.out.println("Nombre de clients que processa el caixer 2: " + c2.getPServerX_Elems());
         System.out.println("Nombre de clients que processa el caixer 3: " + c3.getPServerX_Elems());
         System.out.println("Nombre de clients que processa el caixer 4: " + c4.getPServerX_Elems());
+        System.out.println("Nombre de clients amb dubtes que l'operari ha ajudat: " + op.getPOperari_Elems());
     }
 }

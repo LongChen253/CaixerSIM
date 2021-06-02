@@ -18,6 +18,10 @@ public class Operari {
         return POperari_t;
     }
 
+    public int getPOperari_Elems() {
+        return POperari_Elems;
+    }
+
     public boolean IsAvailable () {
         return available;
     }
